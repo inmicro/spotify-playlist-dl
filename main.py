@@ -133,11 +133,16 @@ def metadataTagger(music_data):
 
 
 print('setting authtoken')
-print('Enter client ID: ')
-client_id = input()
-print('Enter Client Secret: ')
-client_secret = input()
-authToken = setAuth(client_id, client_secret)
+if os.path.isfile('creds'):
+    with open('creds') as file:
+        lines = [line.rstrip() for line in file]
+    authToken = setAuth(lines[0], lines[1])
+else:
+    print('Enter client ID: ')
+    client_id = input()
+    print('Enter Client Secret: ')
+    client_secret = input()
+    authToken = setAuth(client_id, client_secret)
 print('spotify tracks')
 music_data = getPlaylistTrackId(sys.argv[1], authToken)
 print('youtube results')
