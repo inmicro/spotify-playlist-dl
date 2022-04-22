@@ -26,3 +26,7 @@ python3 main.py <playlist url>
 
 ## Disclaimer
 I do not condone piracy of any type. I personally buy all the music that I like from iTunes. This script is just for educational purposes(ie is a nice hack)
+
+
+#### Thanks
+To the people who made spotipy, yt-dl and the contributors :)(Also the musicians)
