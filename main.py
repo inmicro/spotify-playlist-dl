@@ -1,16 +1,19 @@
+#! /usr/bin/python3
+
 from typing import Tuple
 import os
 import urllib.request
 from youtube_search import YoutubeSearch
 from spotipy.oauth2 import SpotifyClientCredentials
 import spotipy
+from spotipy import Spotify
 import yt_dlp
 from mutagen.easyid3 import EasyID3
 from mutagen.id3 import ID3, APIC
 import sys
 
 # Setting the spotify credentials to access the web api
-def setAuth(client_id, client_secret):
+def setAuth(client_id: str, client_secret: str) -> Spotify:
     auth_manager = SpotifyClientCredentials(client_id, client_secret)
     sp = spotipy.Spotify(auth_manager=auth_manager)
     return sp
@@ -52,13 +55,14 @@ def getPlaylistTrackId(playlist_url, sp):
         artist_info = sp.artist(artists_uri)
         genre_list.append(artist_info['genres'])
         cover_image_list.append(song_track['album']['images'][0]['url'])
-    all_music_data = {
+
+    return {
         'song_list' : song_name_list,
         'album_list' : album_list,
         'artist_list' : artist_list,
         'cover_images' : cover_image_list
     }
-    return all_music_data
+
 
 def getYoutubeIdfromSong(song_list, artist_list):
     result_list = []
