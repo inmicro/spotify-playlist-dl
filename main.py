@@ -1,3 +1,4 @@
+from typing import Tuple
 import os
 import urllib.request
 from youtube_search import YoutubeSearch
@@ -8,10 +9,9 @@ from mutagen.easyid3 import EasyID3
 from mutagen.id3 import ID3, APIC
 import sys
 
-
 # Setting the spotify credentials to access the web api
 def setAuth(client_id, client_secret):
-    auth_manager = SpotifyClientCredentials(client_id='fb039d5e83a747c584808767dde29f07', client_secret='4fa9f20034894ee18536fd7523e0bbfe')
+    auth_manager = SpotifyClientCredentials(client_id, client_secret)
     sp = spotipy.Spotify(auth_manager=auth_manager)
     return sp
 
@@ -57,13 +57,13 @@ def getPlaylistTrackId(playlist_url, sp):
         'album_list' : album_list,
         'artist_list' : artist_list,
         'cover_images' : cover_image_list
-     }
+    }
     return all_music_data
 
 def getYoutubeIdfromSong(song_list, artist_list):
     result_list = []
     i = 0
-    for song in song_list:
+    for _ in song_list:
         search_string = song_list[i] + ' ' + artist_list[i]
         results = YoutubeSearch(search_string, max_results=1).to_dict()
         print('got: ' + song_list[i] + ' by ' + artist_list[i])
@@ -101,7 +101,6 @@ def downloadFromYtDL(id_list):
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             ydl.download([url])
 
-
 def metadataTagger(music_data):
     try:
         os.mkdir('album_art')
@@ -131,18 +130,22 @@ def metadataTagger(music_data):
                     )
                 audiox.save()
 
+# I wish I didn't do recursion but alr
+def getCredentialsfromEnv(state: bool = True) -> Tuple[str, str]:
+    if state:
+        if "SPOTIFY_KEY" in os.environ and "SPOTIFY_SECRET" in os.environ:
+            return (os.environ["SPOTIFY_KEY"], os.environ["SPOTIFY_SECRET"])
+        else:
+            return getCredentialsfromEnv(False)
+    else:
+        client_id = input('Enter client ID: ')
+        client_secret = input('Enter Client Secret: ')
+        return (client_id, client_secret)
 
-print('setting authtoken')
-if os.path.isfile('creds'):
-    with open('creds') as file:
-        lines = [line.rstrip() for line in file]
-    authToken = setAuth(lines[0], lines[1])
-else:
-    print('Enter client ID: ')
-    client_id = input()
-    print('Enter Client Secret: ')
-    client_secret = input()
-    authToken = setAuth(client_id, client_secret)
+creds = getCredentialsfromEnv()
+authToken = setAuth(creds[0], creds[1])
+
+
 print('spotify tracks')
 music_data = getPlaylistTrackId(sys.argv[1], authToken)
 print('youtube results')
