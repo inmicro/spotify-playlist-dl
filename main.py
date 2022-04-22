@@ -11,7 +11,7 @@ import sys
 
 # Setting the spotify credentials to access the web api
 def setAuth(client_id, client_secret):
-    auth_manager = SpotifyClientCredentials(client_id='fb039d5e83a747c584808767dde29f07', client_secret='4fa9f20034894ee18536fd7523e0bbfe')
+    auth_manager = SpotifyClientCredentials(client_id=client_id, client_secret=client_secret)
     sp = spotipy.Spotify(auth_manager=auth_manager)
     return sp
 
