@@ -10,6 +10,7 @@ Mini python script to demonstrate how spotipy can be cleverly worked around to g
 - Run the script, with your first argument being the URL of the spotify playlist you want:
 ``$ python3 main.py <playlist url>``
 - It will ask for your credentials. Put them appropriately. Move the songs in the music directory away after the script has finished running.
+- You can create a file named ``creds`` and put in the client_id on the first line and client_secret on the second and it won't ask for creds each time
 
 ## Disclaimer
 I do not condone piracy of any type. I personally buy all the music that I like from iTunes. This script is just for educational purposes(ie is a nice hack)
