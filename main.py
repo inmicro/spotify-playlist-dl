@@ -1,3 +1,4 @@
+from distutils.command.clean import clean
 import os
 import urllib.request
 from youtube_search import YoutubeSearch
@@ -7,6 +8,8 @@ import yt_dlp
 from mutagen.easyid3 import EasyID3
 from mutagen.id3 import ID3, APIC
 import sys
+import shutil
+import time
 
 
 # Setting the spotify credentials to access the web api
@@ -131,6 +134,15 @@ def metadataTagger(music_data):
                     )
                 audiox.save()
 
+def zipItUp(sp):
+    results = sp.user_playlist(user=None, playlist_id=sys.argv[1], fields="name")
+    timestr = time.strftime("%Y%m%d-%H%M%S")
+    zipfilename = results['name'] + '_' + timestr 
+    shutil.make_archive(zipfilename, 'zip', 'music')
+    shutil.rmtree('music/')
+    shutil.rmtree('album_art/')
+
+
 
 print('setting authtoken')
 if os.path.isfile('creds'):
@@ -152,4 +164,5 @@ print('now downloading')
 downloadFromYtDL(yt_results)
 print('setting metadata')
 metadataTagger(music_data)
+zipItUp(authToken)
 
