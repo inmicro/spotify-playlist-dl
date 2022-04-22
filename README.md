@@ -1,5 +1,5 @@
 # spotify-playlist-dl
-Mini python script to demonstrate how spotipy can be cleverly worked around to get the songs in a playlist
+Mini python script to demonstrate how spotify can be cleverly worked around to get the songs in a playlist
 
 ## Instructions
 - Download the script and the requirements. You need to have Git installed.
