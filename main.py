@@ -84,9 +84,12 @@ def createYoutubeIdList(yt_results):
             ytIdList.append(elements[i]['id'])
     return ytIdList
 
+# Hook for showing download progress
 def my_hook(d):
     if d['status'] == 'finished':
-        print('Done downloading, now converting ...')
+        print(f"-------{ d['filename'] } was finished downloading-------")
+    elif d['status'] == 'downloading':
+        print(f"Downloading {d['filename']}: {d['_percent_str']}% complete")
 
 def downloadFromYtDL(id_list):
     url_list = []
@@ -99,6 +102,7 @@ def downloadFromYtDL(id_list):
         }],
         'progress_hooks': [my_hook],
         'outtmpl' : 'music/%(title)s.%(ext)s',
+        'external_downloader_args': ['-loglevel', 'panic']
     }
     for id in id_list:
         url_list.append(('https://www.youtube.com/watch?v=' + id))
@@ -134,31 +138,33 @@ def metadataTagger(music_data):
                     )
                 audiox.save()
 
-# I wish I didn't do recursion but alr
-def getCredentialsfromEnv(state: bool = True) -> Tuple[str, str]:
-    if state:
-        if "SPOTIFY_KEY" in os.environ and "SPOTIFY_SECRET" in os.environ:
-            return (os.environ["SPOTIFY_KEY"], os.environ["SPOTIFY_SECRET"])
-        else:
-            return getCredentialsfromEnv(False)
+def getCredentialsfromEnv() -> Tuple[str, str]:
+    if "SPOTIFY_KEY" in os.environ and "SPOTIFY_SECRET" in os.environ:
+        return (os.environ["SPOTIFY_KEY"], os.environ["SPOTIFY_SECRET"])
     else:
         client_id = input('Enter client ID: ')
         client_secret = input('Enter Client Secret: ')
         return (client_id, client_secret)
 
+
+# Create Playlist
+music_data = Playlist(sys.argv[1])
+
+# Create client from credentials
 creds = getCredentialsfromEnv()
 client = setAuth(creds[0], creds[1])
 
-
-print('spotify tracks')
-# music_data = getPlaylistTrackId(sys.argv[1], authToken)
-music_data = Playlist(sys.argv[1])
+# Populate the playlist with tracks using the client
 music_data.populate(client)
-lists = music_data.getSeparateLists()
-print('youtube results')
-yt_results = getYoutubeIdfromSong(lists['song_list'], lists['artist_list'])
-print('now downloading')
-downloadFromYtDL(yt_results)
-print('setting metadata')
-metadataTagger(music_data)
 
+# Convert to separate lists for now
+lists = music_data.getSeparateLists()
+
+# Get search results
+yt_results = getYoutubeIdfromSong(lists['song_list'], lists['artist_list'])
+
+# Donwload using the search results
+downloadFromYtDL(yt_results)
+
+# Attach metadata
+metadataTagger(music_data)
