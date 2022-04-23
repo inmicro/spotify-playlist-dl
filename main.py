@@ -64,7 +64,6 @@ def getPlaylistTrackId(playlist_url, sp):
         'cover_images' : cover_image_list
     }
 
-
 def getYoutubeIdfromSong(song_list, artist_list):
     result_list = []
     i = 0

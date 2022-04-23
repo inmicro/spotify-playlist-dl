@@ -1,5 +1,7 @@
 from spotipy import Spotify
-from typing import List, Dict
+from typing import List, Dict, Any
+from youtube_search import YoutubeSearch
+import yt_dlp
 
 # Factory
 # A single track i.e a single song
@@ -10,6 +12,14 @@ class Track:
         self.genre = genre
         self.cover = cover
         self.album = album
+
+    def getId(self):
+        result = YoutubeSearch(f"{self.name} {self.artist}", max_results=1).to_dict()
+        return result[0]['id']
+    
+    def download(self, options: Dict[str, Any]):
+        with yt_dlp.YoutubeDL(options) as ydl:
+            ydl.download(f"https://www.youtube.com/watch?v={self.getId()}")
 
 # Singleton
 # A single playlist containing a list of tracks i.e songs
