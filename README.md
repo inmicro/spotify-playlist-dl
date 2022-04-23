@@ -37,10 +37,10 @@ Check #flags to see all the available flags
 ## Disclaimer
 I do not condone piracy of any type. I personally buy all the music that I like from iTunes. This script is just for educational purposes(ie is a nice hack)
 
-### Rewrite
-To check out the still under developement rewrite of the script, check out https://github.com/inmicro/spotify-playlist-dl/tree/vaimer-bs
-
+### Fork
+Check out vaimer9's osm rewrite: https://github.com/Vaimer9/detach Try it out too! (The code is much nicer and easier to hack around)
 #### Thanks
 To the people who made spotipy, yt-dl and the contributors :)(Also the musicians)
+
 
 
