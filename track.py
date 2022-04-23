@@ -1,13 +1,16 @@
 from spotipy import Spotify
 from typing import List
 
+# Factory
 class Track:
-    def __init__(self, name, artist, genre, cover):
+    def __init__(self, name, artist, genre, cover, album):
         self.name = name
         self.artist = artist
         self.genre = genre
         self.cover = cover
+        self.album = album
 
+# Singleton
 class Playlist:
     def __init__(self, url: str):
         self.tracklist: List[Track]
@@ -38,6 +41,23 @@ class Playlist:
                 song_track['name'],
                 song_track['artists'][0]['name'],
                 artist_info['genres'],
-                song_track['album']['images'][0]['url']
-
+                song_track['album']['images'][0]['url'],
+                song_track['album']['name']
             ))
+
+    def getSeparateLists(self):
+        song_name_list = []
+        artist_list = []
+        album_list = []
+        cover_image_list = []
+        for element in self.tracklist:
+            song_name_list.append(element.name)
+            artist_list.append(element.artist)
+            cover_image_list.append(element.cover)
+            album_list.append(element.album)
+        return {
+            'song_list' : song_name_list,
+            'album_list' : album_list,
+            'artist_list' : artist_list,
+            'cover_images' : cover_image_list
+        }

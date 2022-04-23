@@ -3,6 +3,7 @@
 from typing import Tuple
 import os
 import urllib.request
+from track import *
 from youtube_search import YoutubeSearch
 from spotipy.oauth2 import SpotifyClientCredentials
 import spotipy
@@ -110,7 +111,6 @@ def metadataTagger(music_data):
         os.mkdir('album_art')
     except:
         pass
-    outputdir = 'album_art\\'
     onlyfiles = [f for f in os.listdir('music/') if os.path.isfile(os.path.join('music/', f))]
     for file in onlyfiles:
         filepath = 'music/' + file
@@ -147,14 +147,16 @@ def getCredentialsfromEnv(state: bool = True) -> Tuple[str, str]:
         return (client_id, client_secret)
 
 creds = getCredentialsfromEnv()
-authToken = setAuth(creds[0], creds[1])
+client = setAuth(creds[0], creds[1])
 
 
 print('spotify tracks')
-music_data = getPlaylistTrackId(sys.argv[1], authToken)
+# music_data = getPlaylistTrackId(sys.argv[1], authToken)
+music_data = Playlist(sys.argv[1])
+music_data.populate(client)
+lists = music_data.getSeparateLists()
 print('youtube results')
-yt_results = getYoutubeIdfromSong(music_data['song_list'], music_data['artist_list'])
-print(music_data['cover_images'])
+yt_results = getYoutubeIdfromSong(lists['song_list'], lists['artist_list'])
 print('now downloading')
 downloadFromYtDL(yt_results)
 print('setting metadata')
