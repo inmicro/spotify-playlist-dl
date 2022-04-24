@@ -8,7 +8,7 @@ import time
 
 
 # Playlist helper functions
-def getPlaylistTrackId(playlist_url, sp):
+def getPlaylistTrackInfo(playlist_url, sp):
     # lists for IDs, track url, song names, etc
     id_list = []
     track_id_list = []
