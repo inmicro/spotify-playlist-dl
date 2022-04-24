@@ -28,11 +28,21 @@ Check #flags to see all the available flags
 ```
 -m / --mode <playlist/track> (REQUIRED)  -> Sets mode to playlist or track. For downloading individual track, set: -m track 
                                                                             for downloading playlist, set : -m playlist
--u / --url <URL of Playlist/Track>  (REQUIRED)    -> To set the URL of the playlist/track which you want to get.
+												    for downloading top songs from artist, set : -m artist
+-u / --url <URL of Playlist/Track>  (REQUIRED)    -> To set the URL of the playlist/track/artist which you want to get.
 -s / --storeformat <zip/folder> (OPTIONAL)  -> For playlists only. sets the format of how the final music should be stored, in a zipfile or in a folder. By default folder
 -q / --quality <320k/128k/medium/insane> (Optional) -> Sets quality of ffmpeg encoded file. insane and 320k are the same thing. Same for 128k and medium. By default set to 192K
--h / --help Prints out detailed description of all flags and how to use them.
+-h / --help -> Prints out detailed description of all flags and how to use them.
+-n / --number (Optional) => relevant for artists mode only. Sets the number of top songs to download
 ```
+
+## Examples
+#### Downloading songs from playlist, encode file to 320k and save it as a zip file:
+```$ python main.py --mode playlists --url <url of playlist> --storeformat zip```
+#### Download a track and leave everything to defaults
+```$ python main.py --mode track --url <track url> ```
+#### Download top 9 tracks of an artist, encode it to 128k and leave everything else to normal
+```$ python main.py --mode artist --url <artist url> --number 9 --quality 128k```
 
 ## Disclaimer
 I do not condone piracy of any type. I personally buy all the music that I like from iTunes. This script is just for educational purposes(ie is a nice hack)
