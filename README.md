@@ -49,6 +49,8 @@ I do not condone piracy of any type. I personally buy all the music that I like 
 
 ### Fork
 Check out vaimer9's osm rewrite: https://github.com/Vaimer9/detach Try it out too! (The code is much nicer and easier to hack around)
+
+edit: he uses cursed strong typing. don't bother
 #### Thanks
 To the people who made spotipy, yt-dl and the contributors :)(Also the musicians)
 
